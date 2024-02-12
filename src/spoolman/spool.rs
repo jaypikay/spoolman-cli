@@ -41,3 +41,12 @@ pub async fn get_spools() -> Result<Vec<Spool>, Error> {
 
     return Ok(spools);
 }
+
+pub async fn get_spool(spool_id: &u32) -> Result<Spool, Error> {
+    let path = format!("spool/{}", spool_id);
+    let response = api::get(&path).await?;
+
+    let spool: Spool = response.json().await?;
+
+    return Ok(spool);
+}
