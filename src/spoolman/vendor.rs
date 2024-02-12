@@ -1,4 +1,4 @@
-use crate::spoolman::utils::{default_empty_float, default_empty_string};
+use crate::spoolman::utils::default_empty_string;
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
