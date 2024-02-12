@@ -9,28 +9,28 @@ use serde::Deserialize;
 #[derive(Deserialize, Debug)]
 pub struct Spool {
     pub id: u32,
-    //pub registered: String,
-    //#[serde(default = "default_empty_string")]
-    //pub first_used: String,
+    pub registered: String,
+    #[serde(default = "default_empty_string")]
+    pub first_used: String,
     #[serde(default = "default_empty_string")]
     pub last_used: String,
     pub filament: Filament,
-    //#[serde(default = "default_empty_float")]
-    //pub price: f32,
+    #[serde(default = "default_empty_float")]
+    pub price: f32,
     #[serde(default = "default_empty_float")]
     pub remaining_weight: f32,
     #[serde(default = "default_empty_float")]
     pub used_weight: f32,
-    //#[serde(default = "default_empty_float")]
-    //pub remaining_length: f32,
-    //#[serde(default = "default_empty_float")]
-    //pub used_length: f32,
-    //#[serde(default = "default_empty_string")]
-    //pub location: String,
-    //#[serde(default = "default_empty_string")]
-    //pub lot_nr: String,
-    //#[serde(default = "default_empty_string")]
-    //pub comment: String,
+    #[serde(default = "default_empty_float")]
+    pub remaining_length: f32,
+    #[serde(default = "default_empty_float")]
+    pub used_length: f32,
+    #[serde(default = "default_empty_string")]
+    pub location: String,
+    #[serde(default = "default_empty_string")]
+    pub lot_nr: String,
+    #[serde(default = "default_empty_string")]
+    pub comment: String,
     pub archived: bool,
 }
 
