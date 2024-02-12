@@ -5,7 +5,10 @@ use std::env;
 fn build_url_with_endpoint(endpoint: &str) -> String {
     let base_url = match env::var("SPOOLMAN_URL") {
         Ok(url) => format!("{}/api/v1", url),
-        Err(_) => "http://localhost:8000".to_string(),
+        Err(_) => {
+            eprintln!("Environment variable SPOOLMAN_URL not set.\nUsing default SPOOLMAN_URL=http://localhost:8000");
+            "http://localhost:8000".to_string()
+        }
     };
 
     format!(

@@ -6,6 +6,34 @@ Spool is a CLI tool for [Spoolman](https://github.com/Donkie/Spoolman) to view, 
 Using a spool is meant to reduce the weight of a spool.
 Whereas checking a spool helps identify spools with enough material left for a print.
 
+## Configuration
+
+### Environment Variables
+
+#### SPOOLMAN_URL
+
+Default: `http://localhost:8000`
+
+If hosted different set the environment variable accordingly.
+
+Example:
+
+```sh
+export SPOOLMAN_URL=https://spoolman.acme-domain.tld
+```
+
+#### http_proxy / https_proxy
+
+Default: ``
+
+If a proxy connection is required.
+
+Example:
+
+```sh
+export https_proxy=http://proxy.acme-domain.tld
+```
+
 ## Usage
 
 ### spool
