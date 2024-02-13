@@ -2,7 +2,7 @@ use reqwest::Error;
 use serde::Deserialize;
 
 use crate::spoolman::{
-    api,
+    api::SpoolmanAPI,
     filament::Filament,
     utils::{default_empty_float, default_empty_string},
 };
@@ -36,7 +36,10 @@ pub struct Spool {
 }
 
 pub async fn get_spools() -> Result<Vec<Spool>, Error> {
-    let response = api::get("spool?sort=last_used:desc,filament.name:asc").await?;
+    let api = SpoolmanAPI::new();
+    let response = api
+        .get("spool?sort=last_used:desc,filament.name:asc")
+        .await?;
 
     let spools: Vec<Spool> = response.json().await?;
 
@@ -45,7 +48,9 @@ pub async fn get_spools() -> Result<Vec<Spool>, Error> {
 
 pub async fn get_spool(spool_id: &u32) -> Result<Spool, Error> {
     let path = format!("spool/{}", spool_id);
-    let response = api::get(&path).await?;
+
+    let api = SpoolmanAPI::new();
+    let response = api.get(&path).await?;
 
     let spool: Spool = response.json().await?;
 
@@ -55,8 +60,9 @@ pub async fn get_spool(spool_id: &u32) -> Result<Spool, Error> {
 pub async fn use_spool(spool_id: &u32, used_weight: &f32) -> Result<Spool, Error> {
     let path = format!("spool/{}/use", spool_id);
 
+    let api = SpoolmanAPI::new();
     let params = vec![("use_weight", used_weight)];
-    let response = api::put(&path, &params).await?;
+    let response = api.put(&path, &params).await?;
     let spool: Spool = response.json().await?;
 
     return Ok(spool);

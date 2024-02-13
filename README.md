@@ -8,23 +8,22 @@ Whereas checking a spool helps identify spools with enough material left for a p
 
 ## Configuration
 
-### Environment Variables
+### Configuration File
 
-#### SPOOLMAN_URL
+For configuration _spool_ uses a TOML file saved as `~/.config/spool/config.toml` to configure the Spoolman URL.
 
-Default: `http://localhost:8000`
-
-If hosted different set the environment variable accordingly.
-
-Example:
-
-```sh
-export SPOOLMAN_URL=https://spoolman.acme-domain.tld
+```toml
+[spoolman]
+url = "https://spoolman.acme-domain.tld"
 ```
+
+### Environment Variables
 
 #### http_proxy / https_proxy
 
-Default: ``
+If a proxy connection is required, the default environment variables can be used.
+
+Default: ""
 
 If a proxy connection is required.
 
