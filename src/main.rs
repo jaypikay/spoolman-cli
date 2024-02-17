@@ -1,12 +1,10 @@
+mod helpers;
 mod spoolman;
-mod utils;
 
 use clap::{arg, Command};
-use colored::Colorize;
 use tokio::runtime::Runtime;
 
 use spoolman::spool;
-use utils::hex_to_rgb;
 
 fn cli() -> Command {
     Command::new("spool")
@@ -41,24 +39,10 @@ fn display_spools() {
 
     match result {
         Ok(spools) => {
-            println!(
-                "{:^4} {:^48} {:10} {:^8} {:>10} {:^10} {:12}",
-                "ID", "Filament", "Material", "Color", "Available", "Used", "Last used"
-            );
+            helpers::print_spool_table_header();
             for spool in spools.iter() {
                 if !spool.archived {
-                    let (r, g, b) = hex_to_rgb(&spool.filament.color_hex).unwrap();
-
-                    println!(
-                        "{:4} {:48} {:10} {:^8} {:>10.2} {:>10.2} {:12}",
-                        spool.id,
-                        spool.filament.name,
-                        spool.filament.material,
-                        spool.filament.color_hex.on_truecolor(r, g, b),
-                        spool.remaining_weight,
-                        spool.used_weight,
-                        spool.last_used,
-                    );
+                    helpers::print_spool_table_row(spool);
                 }
             }
         }
@@ -80,22 +64,8 @@ fn use_spool_material(spool_id: &u32, weight: &f32) {
 
                 match result {
                     Ok(used_spool) => {
-                        let (r, g, b) = hex_to_rgb(&used_spool.filament.color_hex).unwrap();
-
-                        println!(
-                            "{:^4} {:^48} {:10} {:^8} {:>10} {:^10} {:12}",
-                            "ID", "Filament", "Material", "Color", "Available", "Used", "Last used"
-                        );
-                        println!(
-                            "{:4} {:48} {:10} {:^8} {:>10.2} {:>10.2} {:12}",
-                            used_spool.id,
-                            used_spool.filament.name,
-                            used_spool.filament.material,
-                            used_spool.filament.color_hex.on_truecolor(r, g, b),
-                            used_spool.remaining_weight,
-                            used_spool.used_weight,
-                            used_spool.last_used,
-                        );
+                        helpers::print_spool_table_header();
+                        helpers::print_spool_table_row(&used_spool);
 
                         if weight > &used_spool.remaining_weight {
                             println!("Not enough filament on spool!");
@@ -118,22 +88,8 @@ fn check_material_available(spool_id: &u32, weight: &f32) {
 
     match result {
         Ok(spool) => {
-            let (r, g, b) = hex_to_rgb(&spool.filament.color_hex).unwrap();
-
-            println!(
-                "{:^4} {:^48} {:10} {:^8} {:>10} {:^10} {:12}",
-                "ID", "Filament", "Material", "Color", "Available", "Used", "Last used"
-            );
-            println!(
-                "{:4} {:48} {:10} {:^8} {:>10.2} {:>10.2} {:12}",
-                spool.id,
-                spool.filament.name,
-                spool.filament.material,
-                spool.filament.color_hex.on_truecolor(r, g, b),
-                spool.remaining_weight,
-                spool.used_weight,
-                spool.last_used,
-            );
+            helpers::print_spool_table_header();
+            helpers::print_spool_table_row(&spool);
 
             if weight > &spool.remaining_weight {
                 println!("Not enough filament on spool!");
