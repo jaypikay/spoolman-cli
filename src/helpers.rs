@@ -15,20 +15,28 @@ fn hex_to_rgb(hex: &str) -> Option<(u8, u8, u8)> {
 
 pub fn print_spool_table_header() {
     println!(
-        "{:^4} {:^48} {:10} {:^8} {:>10} {:^10} {:12}",
-        "ID", "Filament", "Material", "Color", "Available", "Used", "Last used"
+        "{:^4} {:^48} {:10} {:^8} {:>14} {:>5} {:>10} {:20}",
+        "ID".underline(),
+        "Filament".underline(),
+        "Material".underline(),
+        "Color".underline(),
+        "Remaining".underline(),
+        "%".underline(),
+        "Used".underline(),
+        "Last used".underline()
     );
 }
 
 pub fn print_spool_table_row(spool: &spool::Spool) {
     let (r, g, b) = hex_to_rgb(&spool.filament.color_hex).unwrap();
     println!(
-        "{:4} {:48} {:10} {:^8} {:>10.2} {:>10.2} {:12}",
+        "{:4} {:48} {:10} {:^8} {:>14.2} {:5.1} {:>10.2} {:20}",
         spool.id,
         spool.filament.name,
         spool.filament.material,
         spool.filament.color_hex.on_truecolor(r, g, b),
         spool.remaining_weight,
+        spool.remaining_weight / spool.filament.weight * 100.,
         spool.used_weight,
         spool.last_used,
     );
