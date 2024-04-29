@@ -25,12 +25,12 @@ impl SpoolmanAPI {
 
     fn build_client(&self) -> Result<Client, Error> {
         let http_proxy = match env::var("http_proxy") {
-            Ok(proxy) => Some(reqwest::Proxy::http(&proxy).unwrap()),
+            Ok(proxy) => Some(reqwest::Proxy::http(proxy).unwrap()),
             Err(_) => None,
         };
 
         let https_proxy = match env::var("https_proxy") {
-            Ok(proxy) => Some(reqwest::Proxy::https(&proxy).unwrap()),
+            Ok(proxy) => Some(reqwest::Proxy::https(proxy).unwrap()),
             Err(_) => None,
         };
 
@@ -54,7 +54,7 @@ impl SpoolmanAPI {
         let client = self.build_client()?;
         let response = client.get(url).send().await?;
 
-        return Ok(response);
+        Ok(response)
     }
 
     pub async fn put<K, V>(&self, endpoint: &str, params: &[(K, V)]) -> Result<Response, Error>
@@ -74,6 +74,6 @@ impl SpoolmanAPI {
         let client = self.build_client()?;
         let response = client.put(url).json(&map).send().await?;
 
-        return Ok(response);
+        Ok(response)
     }
 }
