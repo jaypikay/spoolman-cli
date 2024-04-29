@@ -15,11 +15,13 @@ fn hex_to_rgb(hex: &str) -> Option<(u8, u8, u8)> {
 
 pub fn print_spool_table_header() {
     println!(
-        "{:^4} {:48} {:9} {:^8} {:>9} {:>5} {:>7} {:20}",
+        "{:^4} {:48} {:9} {:^8} {:4} {:5} {:>9} {:>5} {:>7} {:20}",
         "ID".underline(),
         "Filament".underline(),
         "Material".underline(),
         "Color".underline(),
+        "K".underline(),
+        "PA".underline(),
         "Remaining".underline(),
         "%".underline(),
         "Used".underline(),
@@ -29,12 +31,22 @@ pub fn print_spool_table_header() {
 
 pub fn print_spool_table_row(spool: &spool::Spool) {
     let (r, g, b) = hex_to_rgb(&spool.filament.color_hex).unwrap();
+    let pressure_advance = match spool.filament.extra.get("pressure_advance") {
+        Some(value) => value,
+        None => "",
+    };
+    let k_factor = match spool.extra.get("k_factor") {
+        Some(value) => value,
+        None => "",
+    };
     println!(
-        "{:4} {:48} {:9} {:^8} {:>9.2} {:5.1} {:>7.2} {:20}",
+        "{:4} {:48} {:9} {:^8} {:4} {:5} {:>9.2} {:5.1} {:>7.2} {:20}",
         spool.id,
         spool.filament.name,
         spool.filament.material,
         spool.filament.color_hex.on_truecolor(r, g, b),
+        k_factor,
+        pressure_advance,
         spool.remaining_weight,
         spool.remaining_weight / spool.filament.weight * 100.,
         spool.used_weight,

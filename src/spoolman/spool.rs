@@ -1,5 +1,6 @@
 use reqwest::Error;
 use serde::Deserialize;
+use std::collections::HashMap;
 
 use crate::spoolman::{
     api::SpoolmanAPI,
@@ -33,6 +34,7 @@ pub struct Spool {
     #[serde(default = "default_empty_string")]
     pub comment: String,
     pub archived: bool,
+    pub extra: HashMap<String, String>,
 }
 
 pub async fn get_spools() -> Result<Vec<Spool>, Error> {

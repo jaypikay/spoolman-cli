@@ -3,6 +3,7 @@ use crate::spoolman::{
     vendor::Vendor,
 };
 use serde::Deserialize;
+use std::collections::HashMap;
 
 #[derive(Deserialize, Debug)]
 pub struct Filament {
@@ -31,4 +32,5 @@ pub struct Filament {
     pub settings_bed_temp: u32,
     #[serde(default = "default_empty_string")]
     pub color_hex: String,
+    pub extra: HashMap<String, String>,
 }
