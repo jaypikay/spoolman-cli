@@ -43,7 +43,7 @@ pub async fn get_spools() -> Result<Vec<Spool>, Error> {
 
     let spools: Vec<Spool> = response.json().await?;
 
-    return Ok(spools);
+    Ok(spools)
 }
 
 pub async fn get_spool(spool_id: &u32) -> Result<Spool, Error> {
@@ -54,7 +54,7 @@ pub async fn get_spool(spool_id: &u32) -> Result<Spool, Error> {
 
     let spool: Spool = response.json().await?;
 
-    return Ok(spool);
+    Ok(spool)
 }
 
 pub async fn use_spool(spool_id: &u32, used_weight: &f32) -> Result<Spool, Error> {
@@ -65,5 +65,5 @@ pub async fn use_spool(spool_id: &u32, used_weight: &f32) -> Result<Spool, Error
     let response = api.put(&path, &params).await?;
     let spool: Spool = response.json().await?;
 
-    return Ok(spool);
+    Ok(spool)
 }

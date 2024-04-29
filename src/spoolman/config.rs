@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fs;
-use toml;
-use xdg;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
