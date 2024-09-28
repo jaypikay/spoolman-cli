@@ -1,6 +1,6 @@
 use reqwest::Error;
 use serde::Deserialize;
-use std::collections::HashMap;
+use std::{collections::HashMap, result::Result};
 
 use crate::spoolman::{
     api::SpoolmanAPI,
@@ -37,7 +37,7 @@ pub struct Spool {
     pub extra: HashMap<String, String>,
 }
 
-pub async fn get_spools() -> Result<Vec<Spool>, Error> {
+pub async fn get_spools() -> std::result::Result<Vec<Spool>, Error> {
     let api = SpoolmanAPI::new();
     let response = api
         .get("spool?sort=last_used:desc,filament.name:asc")
@@ -48,7 +48,7 @@ pub async fn get_spools() -> Result<Vec<Spool>, Error> {
     Ok(spools)
 }
 
-pub async fn get_spool(spool_id: &u32) -> Result<Spool, Error> {
+pub async fn get_spool_by_id(spool_id: &u32) -> Result<Spool, Error> {
     let path = format!("spool/{}", spool_id);
 
     let api = SpoolmanAPI::new();
@@ -59,12 +59,23 @@ pub async fn get_spool(spool_id: &u32) -> Result<Spool, Error> {
     Ok(spool)
 }
 
-pub async fn use_spool(spool_id: &u32, used_weight: &f32) -> Result<Spool, Error> {
+pub async fn use_spool_by_grams(spool_id: &u32, used_weight: &f32) -> Result<Spool, Error> {
     let path = format!("spool/{}/use", spool_id);
 
     let api = SpoolmanAPI::new();
     let params = vec![("use_weight", used_weight)];
     let response = api.put(&path, &params).await?;
+    let spool: Spool = response.json().await?;
+
+    Ok(spool)
+}
+
+pub async fn set_spool_weight(spool_id: &u32, measured_weight: &f32) -> Result<Spool, Error> {
+    let path = format!("spool/{}/measure", spool_id);
+
+    let api = SpoolmanAPI::new();
+    let param = vec![("weight", measured_weight)];
+    let response = api.put(&path, &param).await?;
     let spool: Spool = response.json().await?;
 
     Ok(spool)
