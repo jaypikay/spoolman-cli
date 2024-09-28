@@ -43,10 +43,11 @@ A Spoolman CLI helper
 Usage: spool <COMMAND>
 
 Commands:
-  list   List available spools
-  check  Check if a spool has enough available material
-  use    Reduce the used filament in grams from the spool
-  help   Print this message or the help of the given subcommand(s)
+  list      List available spools
+  check     Check if a spool has enough available material
+  use       Reduce the used filament in grams from the spool
+  measured  Set measured weight for a spool
+  help      Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help  Print help
@@ -88,6 +89,21 @@ Usage: spool use <SPOOLID> <WEIGHT>
 Arguments:
   <SPOOLID>  Spool ID
   <WEIGHT>   Used weight by print in grams
+
+Options:
+  -h, --help  Print help
+```
+
+### spool measured
+
+```
+Set measured weight for a spool
+
+Usage: spool measured <SPOOLID> <WEIGHT>
+
+Arguments:
+  <SPOOLID>  Spool ID
+  <WEIGHT>   Measured weight of spool in grams
 
 Options:
   -h, --help  Print help
