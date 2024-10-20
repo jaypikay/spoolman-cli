@@ -9,7 +9,7 @@ use tokio::time;
 
 use daemonize::Daemonize;
 
-use rumqttc::{mqttbytes, AsyncClient, Event, Incoming, MqttOptions, QoS};
+use rumqttc::{AsyncClient, Event, Incoming, MqttOptions, QoS};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Message {
