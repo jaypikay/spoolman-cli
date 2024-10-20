@@ -4,7 +4,7 @@ use crate::spoolman::spool;
 use futures::executor;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use std::{fs::File, time::Duration};
+use std::{fs::File, ptr::null, time::Duration};
 use tokio::time;
 
 use daemonize::Daemonize;
@@ -60,6 +60,10 @@ pub async fn mqtt_event_loop() {
                     }
                 }
             }
+            Ok(Event::Incoming(Incoming::PingResp)) => {
+                #[cfg(debug_assertions)]
+                eprintln!("Ping received!")
+            }
             Ok(_) => {}
             Err(e) => {
                 eprintln!("Error in MQTT event loop: {}", e)
@@ -72,18 +76,30 @@ pub async fn mqtt_event_loop() {
     }
 }
 
+fn is_valid_path(path_str: &str) -> bool {
+    if path_str.is_empty() {
+        return false;
+    }
+
+    true
+}
 //
 pub fn run(foreground: bool) {
     println!("Starting monitoring daemon...");
 
-    if !foreground {
-        let stderr = File::create("/tmp/spool-daemon.err").unwrap();
-        let stdout = File::create("/tmp/spool-daemon.out").unwrap();
+    let config = read_config().unwrap();
 
-        let daemonize = Daemonize::new()
-            .pid_file("/tmp/spool-daemon.pid")
-            .stdout(stdout)
-            .stderr(stderr);
+    if !foreground {
+        let mut daemonize = Daemonize::new().pid_file(config.daemon.pid_file);
+
+        if is_valid_path(config.daemon.stdout.clone().as_str()) {
+            let file = File::create(config.daemon.stdout).unwrap();
+            daemonize = daemonize.stdout(file);
+        }
+        if is_valid_path(config.daemon.stderr.clone().as_str()) {
+            let file = File::create(config.daemon.stderr).unwrap();
+            daemonize = daemonize.stderr(file);
+        }
 
         match daemonize.start() {
             Ok(_) => {

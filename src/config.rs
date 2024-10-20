@@ -6,11 +6,19 @@ use std::fs;
 pub struct Config {
     pub spoolman: Spoolman,
     pub mqtt: Mqtt,
+    pub daemon: MontiorDaemon,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Spoolman {
     pub url: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct MontiorDaemon {
+    pub stderr: String,
+    pub stdout: String,
+    pub pid_file: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -36,6 +44,11 @@ impl Default for Config {
                 port: 1883,
                 username: "".to_string(),
                 password: "".to_string(),
+            },
+            daemon: MontiorDaemon {
+                stdout: "".to_string(),
+                stderr: "".to_string(),
+                pid_file: "/tmp/spool-daemon.pid".to_string(),
             },
         }
     }
