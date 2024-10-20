@@ -5,6 +5,7 @@ use std::fs;
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
     pub spoolman: Spoolman,
+    pub mqtt: Mqtt,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -12,11 +13,29 @@ pub struct Spoolman {
     pub url: String,
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Mqtt {
+    pub clientid: String,
+    pub topic: String,
+    pub host: String,
+    pub port: u16,
+    pub username: String,
+    pub password: String,
+}
+
 impl Default for Config {
     fn default() -> Config {
         Config {
             spoolman: Spoolman {
                 url: "http://localhost:8000".to_string(),
+            },
+            mqtt: Mqtt {
+                clientid: "SpoolMQ".to_string(),
+                topic: "spoolman/spool".to_string(),
+                host: "localhost".to_string(),
+                port: 1883,
+                username: "".to_string(),
+                password: "".to_string(),
             },
         }
     }
@@ -50,8 +69,8 @@ pub fn read_config() -> Result<Config, Box<dyn Error>> {
         }
     };
 
-    #[cfg(debug_assertions)]
-    println!("{:#?}", config);
+    // #[cfg(debug_assertions)]
+    // println!("{:#?}", config);
 
     Ok(config)
 }

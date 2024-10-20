@@ -1,4 +1,4 @@
-use crate::spoolman::config::{read_config, Config};
+use crate::config::{read_config, Config};
 use reqwest::{Client, Error, Response};
 use std::collections::HashMap;
 use std::env;

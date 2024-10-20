@@ -1,4 +1,6 @@
+mod config;
 mod helpers;
+mod monitor;
 mod spoolman;
 
 use clap::{arg, Command};
@@ -38,6 +40,11 @@ fn cli() -> Command {
                     arg!(<WEIGHT> "Measured weight of spool in grams")
                         .value_parser(clap::value_parser!(f32)),
                 ),
+        )
+        .subcommand(
+            Command::new("daemon")
+                .about("Daemonize Mqtt monitor for automatic Spoolman updates")
+                .arg(arg!(-f --foreground "do not fork into background")),
         )
 }
 
@@ -126,6 +133,10 @@ fn check_material_available(spool_id: &u32, weight: &f32) {
     }
 }
 
+fn start_monitoring_daemon(foreground: bool) {
+    monitor::daemon::run(foreground);
+}
+
 fn main() {
     let matches = cli().get_matches();
 
@@ -143,6 +154,10 @@ fn main() {
             sub_matches.get_one::<u32>("SPOOLID").expect("required"),
             sub_matches.get_one::<f32>("WEIGHT").expect("required"),
         ),
+        Some(("daemon", sub_matches)) => {
+            start_monitoring_daemon(*sub_matches.get_one::<bool>("foreground").unwrap())
+        }
+
         _ => unreachable!(),
     }
 }
