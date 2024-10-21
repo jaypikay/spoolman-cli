@@ -4,6 +4,7 @@ mod monitor;
 mod spoolman;
 
 use clap::{arg, Command};
+use clap_complete::aot::{generate, Generator, Shell};
 use tokio::runtime::Runtime;
 
 use spoolman::spool;
@@ -45,6 +46,14 @@ fn cli() -> Command {
             Command::new("daemon")
                 .about("Daemonize Mqtt monitor for automatic Spoolman updates")
                 .arg(arg!(-f --foreground "do not fork into background")),
+        )
+        .subcommand(
+            Command::new("completion")
+                .about("Completion generator")
+                .arg(
+                    arg!(<SHELL> "Generate shell completion")
+                        .value_parser(clap::value_parser!(Shell)),
+                ),
         )
 }
 
@@ -137,6 +146,10 @@ fn start_monitoring_daemon(foreground: bool) {
     monitor::daemon::run(foreground);
 }
 
+fn print_completion<G: Generator>(gen: G, cmd: &mut Command) {
+    generate(gen, cmd, cmd.get_name().to_string(), &mut std::io::stdout());
+}
+
 fn main() {
     let matches = cli().get_matches();
 
@@ -157,7 +170,12 @@ fn main() {
         Some(("daemon", sub_matches)) => {
             start_monitoring_daemon(*sub_matches.get_one::<bool>("foreground").unwrap())
         }
-
+        Some(("completion", sub_matches)) => {
+            if let Some(generator) = sub_matches.get_one::<Shell>("SHELL").copied() {
+                let mut cmd = cli();
+                print_completion(generator, &mut cmd);
+            }
+        }
         _ => unreachable!(),
     }
 }

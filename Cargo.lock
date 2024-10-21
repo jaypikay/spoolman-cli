@@ -159,6 +159,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "clap_complete"
+version = "4.5.33"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9646e2e245bf62f45d39a0f3f36f1171ad1ea0d6967fd114bca72cb02a8fcdfb"
+dependencies = [
+ "clap",
+]
+
+[[package]]
 name = "clap_lex"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1109,9 +1118,10 @@ dependencies = [
 
 [[package]]
 name = "spool"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "clap",
+ "clap_complete",
  "colored",
  "daemonize",
  "futures",
