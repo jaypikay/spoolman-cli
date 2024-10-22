@@ -57,11 +57,7 @@ impl SpoolmanAPI {
         Ok(response)
     }
 
-    pub async fn put<K, V>(&self, endpoint: &str, params: &[(K, V)]) -> Result<Response, Error>
-    where
-        K: std::cmp::Eq + std::hash::Hash + serde::Serialize,
-        V: serde::Serialize,
-    {
+    pub async fn put(&self, endpoint: &str, params: &[(&str, &f32)]) -> Result<Response, Error> {
         let url = self.build_url_with_endpoint(endpoint);
         #[cfg(debug_assertions)]
         println!("PUT  {}", url);
