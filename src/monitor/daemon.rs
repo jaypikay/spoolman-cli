@@ -1,10 +1,9 @@
 use crate::config::read_config;
 use crate::spoolman::spool;
 
-use futures::executor;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use std::{fs::File, ptr::null, time::Duration};
+use std::{fs::File, time::Duration};
 use tokio::time;
 
 use daemonize::Daemonize;
@@ -45,7 +44,6 @@ pub async fn mqtt_event_loop() {
     }
 
     loop {
-        let enter = executor::enter().unwrap();
         let event = eventloop.poll().await;
 
         match &event {
@@ -66,13 +64,12 @@ pub async fn mqtt_event_loop() {
             }
             Ok(_) => {}
             Err(e) => {
-                eprintln!("Error in MQTT event loop: {}", e)
+                eprintln!("Error in MQTT event loop: {}", e);
+                break;
             }
         }
 
         time::sleep(Duration::from_secs(1)).await;
-
-        drop(enter);
     }
 }
 
@@ -83,7 +80,7 @@ fn is_valid_path(path_str: &str) -> bool {
 
     true
 }
-//
+
 pub fn run(foreground: bool) {
     println!("Starting monitoring daemon...");
 
@@ -110,7 +107,8 @@ pub fn run(foreground: bool) {
         }
     } else {
         println!("Spoolman daemon forground monitoring started.");
-        //executor::block_on(mqtt_event_loop());
-        mqtt_event_loop();
+        loop {
+            mqtt_event_loop();
+        }
     }
 }
