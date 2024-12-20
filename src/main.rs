@@ -91,10 +91,6 @@ fn use_spool_material(spool_id: &u32, weight: &f32) {
                     Ok(used_spool) => {
                         helpers::print_spool_table_header();
                         helpers::print_spool_table_row(&used_spool);
-
-                        if weight > &used_spool.remaining_weight {
-                            println!("Not enough filament on spool!");
-                        }
                     }
                     Err(err) => eprintln!("Error: {}", err),
                 }
