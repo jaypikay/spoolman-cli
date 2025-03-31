@@ -17,9 +17,11 @@ struct Message {
 }
 
 async fn handle_message(message: Message) {
-    match spool::set_spool_weight(&message.id, &message.weight).await {
-        Ok(_) => eprintln!("Request posted successfully"),
-        Err(e) => eprintln!("Failed posting request: {}", e),
+    if message.id != 0xffff {
+        match spool::set_spool_weight(&message.id, &message.weight).await {
+            Ok(_) => eprintln!("Request posted successfully"),
+            Err(e) => eprintln!("Failed posting request: {}", e),
+        }
     }
     time::sleep(Duration::from_millis(200)).await;
 }
