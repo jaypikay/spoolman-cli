@@ -1,7 +1,8 @@
 use crate::spoolman::utils::default_empty_string;
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
+#[allow(dead_code)]
 pub struct Vendor {
     pub id: u32,
     pub registered: String,

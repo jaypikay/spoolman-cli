@@ -8,7 +8,8 @@ use crate::spoolman::{
     utils::{default_empty_float, default_empty_string},
 };
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
+#[allow(dead_code)]
 pub struct Spool {
     pub id: u32,
     pub registered: String,

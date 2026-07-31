@@ -5,7 +5,8 @@ use crate::spoolman::{
 use serde::Deserialize;
 use std::collections::HashMap;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
+#[allow(dead_code)]
 pub struct Filament {
     pub id: u32,
     pub registered: String,
