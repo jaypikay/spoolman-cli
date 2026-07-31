@@ -55,7 +55,7 @@ impl Default for Config {
 }
 
 pub fn read_config() -> Result<Config, Box<dyn Error>> {
-    let xdg_dirs = xdg::BaseDirectories::with_prefix("spool").unwrap();
+    let xdg_dirs = xdg::BaseDirectories::with_prefix("spool");
     let config_path = xdg_dirs
         .place_config_file("config.toml")
         .expect("cannot create configuration directory");
