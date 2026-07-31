@@ -6,6 +6,8 @@ Spool is a CLI tool for [Spoolman](https://github.com/Donkie/Spoolman) to view, 
 Using a spool is meant to reduce the weight of a spool.
 Whereas checking a spool helps identify spools with enough material left for a print.
 
+![spool cli - spool list command](images/spool-list.png)
+
 ## Configuration
 
 ### Configuration File
