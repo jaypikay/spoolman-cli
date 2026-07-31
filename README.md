@@ -18,7 +18,6 @@ For configuration _spool_ uses a TOML file saved as `~/.config/spool/config.toml
 [spoolman]
 url = "https://spoolman.acme-domain.tld"
 
-
 [mqtt]
 host = "mqtt.acme-domain.tld"
 port = 1883
